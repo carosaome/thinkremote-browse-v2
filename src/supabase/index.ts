@@ -29,7 +29,7 @@ export default class SbCore {
 			provider: "google",
 			options: {
 				//redirectTo:'https://remote.thinkmay.net',
-				redirectTo: 'http://localhost:3000',
+				redirectTo: 'https://carosaome.netlify.app',
 				queryParams: {
 					access_type: "offline",
 					prompt: "consent",
