@@ -1,5 +1,10 @@
 import React, { useContext } from 'react';
-const Context = React.createContext(null)
+import Warehouse from '../warehouse';
+
+interface IContext {
+	settingValue: ISettingState
+	dispatch: React.Dispatch<IAction>
+}
 
 interface ISettingState {
 	gamePad: IGamePadValue
@@ -30,31 +35,28 @@ const initialSetting: ISettingState = {
 		lbLt: 1,
 		subBtn: 1,
 	},
-	virtMouse:{}
+	virtMouse: {}
 };
 
 interface IActionData {
-	name: string
-	value: number
-	type: 'gamePad' | 'virtMouse'
+	name: keyof IGamePadValue;
+	value: number;
+	type: 'gamePad' | 'virtMouse';
 }
 interface IAction {
 	type: string
 	data: IActionData
 }
+const Context = React.createContext<IContext>({ settingValue: initialSetting, dispatch: () => { } })
 
-const reducer = (state: ISettingState, action: IAction) => {
+const reducer = (state: ISettingState, action: IAction): ISettingState => {
 	const { data } = action
 	switch (action.type) {
-		case "INIT": {
-			return data
-		}
 		case "UPDATE": {
-			const newData = { ...state}
-			const {	name, value, type	} = data
+			const newData = { ...state }
+			const { name, value, type } = data
 			newData[type][name] = value
 			return newData
-			
 		}
 
 		default:
@@ -63,20 +65,22 @@ const reducer = (state: ISettingState, action: IAction) => {
 };
 
 
-let initialData: ISettingState 
-if (typeof window !== 'undefined') {
-	// Perform localStorage action
-	initialData = JSON.parse(localStorage.getItem('settingData')) ?? initialSetting
-}
+let initialData: ISettingState
+// Perform localStorage action
+const storedData = localStorage.getItem('settingData');
+initialData = storedData ? JSON.parse(storedData) : initialSetting;
+
 
 function SettingProvider({ children }: { children: React.ReactNode }) {
 	const [state, dispatch] = React.useReducer(reducer, initialData)
 	const saveDataLocal = React.useCallback(() => {
 		localStorage.setItem('settingData', JSON.stringify(state))
+		const warehouse = new Warehouse()
+		warehouse.UpdateUserSetting(state)
 	}, [state])
-	
-	
-	
+
+
+
 	React.useEffect(() => {
 		saveDataLocal()
 	}, [saveDataLocal])

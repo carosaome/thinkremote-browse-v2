@@ -63,8 +63,14 @@ export default class SbCore {
 			return new Error(session.error.message)
 
 		const headers = uref == undefined ?
-			{ "access_token": session.data?.session?.access_token } :
-			{ "uref": uref }
+			{
+				"access_token": session.data?.session?.access_token ?? '',
+				"uref": ''
+			} :
+			{
+				"uref": uref,
+				"access_token": ''
+			}
 
 		const body = JSON.stringify({ reference: ref })
 		const { data, error } = await this.supabase.functions.invoke<AuthSessionResp>("session_authenticate" as SbFunction, {

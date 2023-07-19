@@ -6,8 +6,6 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const Container = styled.div`
-    width: ${(props) => props.size ?? "20"}px;
-    height: ${(props) => props.size ?? "20"}px;
     position: relative;
   
 `;
@@ -55,12 +53,17 @@ const Bottom = styled(DefaultButton)`
 `;
 interface Props {
     onTouch: (e: React.TouchEvent, type: "up" | "down", index: number) => void;
-    size;
+    size: number;
 }
 const DPad = (props: Props) => {
     const { onTouch = () => { }, size } = props;
+    const buttonSize = {
+        width: size,
+        height: size
+    }
+    
     return (
-        <Container size={size}>
+        <Container  style={{...buttonSize}}>
             <Top
                 onTouchStart={(e: React.TouchEvent) => onTouch(e, "down", 12)}
                 onTouchEnd={(e: React.TouchEvent) => onTouch(e, "up", 12)}

@@ -34,7 +34,7 @@ export async function TurnOnConfirm(status: string, text?: string): Promise<void
         have_swal = 'none'
     }
 
-
+    console.log('turn on confirm');
     have_swal = 'confirm'
     await Swal.fire({
         title: `${status}`,
@@ -59,7 +59,7 @@ export function TurnOnStatus(status: string, text?: string): void {
         text: text ?? "Please wait while the client is getting ready...",
         showConfirmButton: false,
         timer: 2000,
-        willOpen: () => Swal.showLoading(null),
+        willOpen: () => Swal.showLoading(),
         willClose: () => Swal.hideLoading(),
     });
 }
@@ -93,11 +93,13 @@ export async function AskSelectSoundcard(
 ): Promise<string> {
     TurnOffStatus();
 
-    let swalInput = {};
-    soundcards.forEach((x) => {
+    let swalInput: {
+        [key: string]: string | {};
+      } = {};    soundcards.forEach((x) => {
         if (swalInput[x.Api] == null) {
             swalInput[x.Api] = {};
         }
+        //@ts-ignore
         swalInput[x.Api][x.DeviceID] = x.Name;
     });
 
@@ -108,11 +110,15 @@ export async function AskSelectSoundcard(
         inputPlaceholder: "Click here",
         showCancelButton: false,
         inputValidator: (value) => {
+            let result = 'close'
+
             for (var x of soundcards) {
                 if (x.Name == value) {
-                    return "";
+                    result = "";
+                    break
                 }
             }
+            return result
         },
     });
 
@@ -140,11 +146,14 @@ export async function AskSelectDisplay(
         inputPlaceholder: "Select monitor",
         showCancelButton: false,
         inputValidator: (value) => {
+            let result= 'close'
             for (var x of monitors) {
                 if (x.MonitorName == value) {
-                    return "";
+                    result = "";
+                    break
                 }
             }
+            return result
         },
     });
 

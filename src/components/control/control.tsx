@@ -4,15 +4,12 @@ import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined
 import MouseOutlinedIcon from '@mui/icons-material/MouseOutlined';
 import VideoSettingsOutlinedIcon from '@mui/icons-material/VideoSettingsOutlined';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
-import { List, SpeedDial, SpeedDialAction } from "@mui/material";
-import ListIcon from '@mui/icons-material/List';
 import React, { useEffect, useState, useLayoutEffect, createContext } from "react"; // we need this to make JSX compile
 import { Platform } from "../../core/src/utils/platform";
 import { requestFullscreen } from "../../core/src/utils/screen";
 import { AskSelectBitrate, TurnOnClipboard } from "../popup/popup";
 import { VirtualGamepad } from "../virtGamepad/virtGamepad";
 import { VirtualMouse } from "../virtMouse/virtMouse";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import MobileControl from "./mobileControl";
 import SettingsIcon from '@mui/icons-material/Settings';
 import DesktopControl from "./desktopControl";
@@ -26,7 +23,7 @@ interface IControlContext {
 	isSetVGamePadDefaultValue:boolean
 	isSetVMouseDefaultValue:boolean
 }
-export const ConTrolContext = createContext<IControlContext | null>(null)
+export const ConTrolContext = createContext<IControlContext>({isSetVGamePadDefaultValue: false, isSetVMouseDefaultValue: false})
 
 
 export const WebRTCControl = (input: {
@@ -123,6 +120,8 @@ export const WebRTCControl = (input: {
 								return "static";
 							case "static":
 								return "disable";
+							default:
+								return 'disable'
 						}
 					});
 				},
@@ -137,6 +136,8 @@ export const WebRTCControl = (input: {
 								return "static";
 							case "static":
 								return "disable";
+							default:
+								return 'disable'
 						}
 					});
 
@@ -149,11 +150,11 @@ export const WebRTCControl = (input: {
 				icon: <KeyboardIcon />,
 				name: "Write to clipboard",
 				action: async () => {
-					const text = await TurnOnClipboard()
+					const text = await TurnOnClipboard() || ''
 					await input.clipboardSetCallback(text)
 				},
 			}, {
-				icon: <SettingsIcon />,
+				icon: <SettingsIcon />, 
 				name: "Setting",
 				action: () => {
 					setModalSettingOpen(true)
