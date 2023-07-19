@@ -25,9 +25,9 @@ export async function TurnOnAlert(error: string): Promise<void> {
 }
 
 export async function TurnOnConfirm(status: string, text?: string): Promise<void> {
-    while (have_swal == 'confirm') {
-		await new Promise(r => setTimeout(r, 300));
-    }
+    //while (have_swal == 'confirm') {
+	//	await new Promise(r => setTimeout(r, 300));
+    //}
 
     if (have_swal == 'popup') {
         TurnOffStatus();
