@@ -21,7 +21,7 @@ import SbCore from "./supabase";
 import { Modal } from "@mui/material";
 import IconHorizontalPhone from "./assets/svg/horizontal.svg";
 import Metric from "./components/metric/metric";
-
+import Warehouse from "./warehouse";
 //@ts-ignore
 let client: RemoteDesktopClient = null
 
@@ -68,9 +68,17 @@ export default function App() {
         localStorage.setItem("reference", ref)
 
         const core = new SbCore()
+        const warehouse = new Warehouse()
+        warehouse.WarehouseLoggingSession()
         if (!await core.Authenticated() && user_ref == undefined)
             await core.LoginWithGoogle()
-
+            window.addEventListener('beforeunload', (e) => {
+                e.returnValue = ''
+                e.preventDefault()
+            });
+    
+            window.addEventListener('unload', () => {
+                warehouse.WarehousePush('close')
         if (ref == null)
             return
 
@@ -85,6 +93,7 @@ export default function App() {
         client = new RemoteDesktopClient(
             SignalingConfig,
             { ...WebRTCConfig, iceTransportPolicy: turn ? "relay" : "all" },
+            //@ts-ignore
             remoteVideo.current,
             remoteAudio.current,
             Platform, no_video)
