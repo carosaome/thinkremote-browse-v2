@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useLayoutEffect, useContext, useTransition } from "react"; // we need this to make JSX compile
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import styled from "styled-components";
+import Warehouse from "../../warehouse";
 import {
     IJoystickUpdateEvent,
     Joystick,
@@ -29,7 +30,7 @@ export const JoyStick = (param: {
                 return;
             }
             // param.moveCallback(event.`x, -event.y);
-            setPosition({ x: event.x, y: -event.y });
+            setPosition({ x: event.x ?? 0, y: -(event.y ?? 0) });
         } else if (event.type == "stop") {
             setenableJT(false);
             setPosition({ x: 0, y: 0 });
@@ -100,6 +101,8 @@ const MouseGroup = (param: ButtonGroupProps) => {
     const handleStop = (e: DraggableEvent, data: DraggableData) => {
         startTransition(()=>{
             localStorage.setItem(`mouse_group_pos`, JSON.stringify(posBtn));
+            const warehouse = new Warehouse()
+            warehouse.UpdateMouseGroupPos(posBtn)
         })
     };
 
@@ -108,7 +111,8 @@ const MouseGroup = (param: ButtonGroupProps) => {
         if (isSetVMouseDefaultValue === true) {
             setPosBtn(defaultMouseGroupValue)
             localStorage.setItem(`mouse_group_pos`, JSON.stringify(defaultMouseGroupValue));
-
+            const warehouse = new Warehouse()
+            warehouse.UpdateMouseGroupPos(posBtn)
         }
     }, [isSetVMouseDefaultValue])
     return (

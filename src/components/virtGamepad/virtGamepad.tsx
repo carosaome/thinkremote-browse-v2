@@ -1,7 +1,7 @@
-"use client"
 import React, { useRef, useState, useEffect, useLayoutEffect, useTransition, useContext } from "react"; // we need this to make JSX compile
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import styled from "styled-components";
+import Warehouse from "../../warehouse";
 import {
     IJoystickUpdateEvent,
     Joystick,
@@ -56,7 +56,7 @@ export const VirtualGamepad = (props: {
 export const JoyStick = (param: {
     draggable: ButtonMode;
     moveCallback: (x: number, y: number) => Promise<void>;
-    className: string;
+    className?: string;
     size: number,
 }) => {
 
@@ -69,7 +69,7 @@ export const JoyStick = (param: {
                 moveCallback(0, 0);
                 return;
             }
-            moveCallback(event.x, -event.y);
+            moveCallback(event.x ?? 0, -(event.y ?? 0));
         } else if (event.type == "stop") {
             setenableJT(false);
             moveCallback(0, 0);
@@ -170,6 +170,8 @@ export const ButtonGroupRight = (props: ButtonGroupProps) => {
     const handleStop = (e: DraggableEvent, data: DraggableData) => {
         startTransition(() => {
             localStorage.setItem(`right_group_pos`, JSON.stringify(posBtn));
+            const warehouse = new Warehouse()
+            warehouse.UpdateRightGroupPos(posBtn)
         })
     };
 
@@ -186,7 +188,8 @@ export const ButtonGroupRight = (props: ButtonGroupProps) => {
             }
             setPosBtn(defaultPos)
             localStorage.setItem(`right_group_pos`, JSON.stringify(defaultPos));
-
+            const warehouse = new Warehouse()
+            warehouse.UpdateRightGroupPos(posBtn)
         }
     }, [isSetVGamePadDefaultValue])
     return (
@@ -207,7 +210,7 @@ export const ButtonGroupRight = (props: ButtonGroupProps) => {
             </Draggable>
             <Draggable
                 disabled={props.draggable != "draggable"}
-                position={{ x: posBtn?.ybxa?.x, y: posBtn?.ybxa?.y }}
+                position={{ x: posBtn?.ybxa?.x ?? 0, y: posBtn?.ybxa?.y ?? 0 }}
 
                 onStop={handleStop}
                 onDrag={handleDrag}
@@ -223,7 +226,7 @@ export const ButtonGroupRight = (props: ButtonGroupProps) => {
             </Draggable>
             <Draggable
                 disabled={props.draggable != "draggable"}
-                position={{ x: posBtn?.subBtn?.x, y: posBtn?.subBtn?.y }}
+                position={{ x: posBtn?.subBtn?.x ?? 0, y: posBtn?.subBtn?.y ?? 0}}
                 onStop={handleStop}
                 onDrag={handleDrag}
             >
@@ -324,6 +327,8 @@ export const ButtonGroupLeft = (param: ButtonGroupProps) => {
     const handleStop = (e: DraggableEvent, data: DraggableData) => {
         startTransition(() => {
             localStorage.setItem(`left_group_pos`, JSON.stringify(posBtn));
+            const warehouse = new Warehouse()
+            warehouse.UpdateRightGroupPos(posBtn)
         })
     };
 
@@ -339,7 +344,8 @@ export const ButtonGroupLeft = (param: ButtonGroupProps) => {
             }
             setPosBtn(defaultPos)
             localStorage.setItem(`left_group_pos`, JSON.stringify(defaultPos));
-
+            const warehouse = new Warehouse()
+            warehouse.UpdateRightGroupPos(posBtn)
         }
     }, [isSetVGamePadDefaultValue])
     return (
@@ -360,7 +366,7 @@ export const ButtonGroupLeft = (param: ButtonGroupProps) => {
             </Draggable>
             <Draggable
                 disabled={param.draggable != "draggable"}
-                position={{ x: posBtn?.dpad?.x, y: posBtn?.dpad?.y }}
+                position={{ x: posBtn?.dpad?.x ?? 0, y: posBtn?.dpad?.y ?? 0 }}
                 onStop={handleStop}
                 onDrag={handleDrag}
             >
@@ -419,11 +425,7 @@ const WrapperDrag = styled.div`
     max-width: max-content;
     opacity: 0.3;
 `;
-const WrapperGroupBtn = styled.div`
-    /*width: 50vw;
-    height: 100vh;
-    position: relative;*/
-`;
+
 
 const CssDefaultCenterBtn = styled.button`
     width: 50px;
