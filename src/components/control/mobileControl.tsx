@@ -60,9 +60,8 @@ const Text = styled.span`
 `
 const Button = styled.button`
 	position: absolute;
-	top: -50%;
+	height:100%;
     right: -4px;
-    bottom: -50%;
 	outline: none;
 	border: none;
 	background: none;

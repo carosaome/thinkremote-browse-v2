@@ -14,8 +14,12 @@ const Container = styled.div`
 
 const DefaultButton = styled.button`
      /* depened on Container */
-     width: inherit;
+     
+    width: inherit;
     height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     :active {
         background-color: rgb(97 76 76 / 15%);;
     }
