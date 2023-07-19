@@ -1,4 +1,3 @@
-"use client"
 import React, { useContext } from 'react';
 const Context = React.createContext(null)
 
