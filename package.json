@@ -4,27 +4,31 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "styled-components": "^5.3.6",
-    "sweetalert2": "^11.4.32",
-    "react-chartjs-2": "^5.2.0",
-    "react-draggable": "^4.4.5",
-    "react-icons": "^4.8.0",
-    "utf-8-validate": "^5.0.9",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.4",
+    "@supabase/supabase-js": "^2.26.0",
     "@vercel/analytics": "^0.1.10",
     "@webgpu/types": "^0.1.30",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-icons": "^4.8.0",
     "react-joystick-component": "^6.0.0",
-    "@mui/icons-material": "^5.10.3",
-    "@mui/material": "^5.10.4"
+    "styled-components": "^6.0.4",
+    "sweetalert2": "^11.4.32",
+    "utf-8-validate": "^5.0.9"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
@@ -33,6 +37,7 @@
     "eslint": "^8.44.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "file-loader": "^6.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
   }
