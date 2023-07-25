@@ -100,6 +100,7 @@ const DesktopMetric = React.forwardRef((props: {
 		
 	
 	return (
+		//@ts-ignore
 		<div ref={ref}>
 			{data.map((val, key) => { return <Line key={key} options={options} data={val} /> })}
 		</div>
