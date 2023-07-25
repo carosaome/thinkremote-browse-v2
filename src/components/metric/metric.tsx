@@ -3,17 +3,17 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components'
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
+//import {
+//	Chart as ChartJS,
+//	CategoryScale,
+//	LinearScale,
+//	PointElement,
+//	LineElement,
+//	Title,
+//	Tooltip,
+//	Legend,
+//} from 'chart.js';
+//import { Line } from 'react-chartjs-2';
 import { Platform } from '../../core/src/utils/platform';
 
 export interface Data {
@@ -102,7 +102,7 @@ const DesktopMetric = React.forwardRef((props: {
 	return (
 		//@ts-ignore
 		<div ref={ref}>
-			{data.map((val, key) => { return <Line key={key} options={options} data={val} /> })}
+			{/*{data.map((val, key) => { return <Line key={key} options={options} data={val} /> })}*/}
 		</div>
 	);
 })
@@ -124,17 +124,17 @@ const Metric = (props: {
 		setOpen(!isOpen)
 	}
 	const ref = React.useRef(null);
-	React.useEffect(() => {
-		ChartJS.register(
-			CategoryScale,
-			LinearScale,
-			PointElement,
-			LineElement,
-			Title,
-			Tooltip,
-			Legend
-		);
-	}, [props.platform])
+	//React.useEffect(() => {
+	//	ChartJS.register(
+	//		CategoryScale,
+	//		LinearScale,
+	//		PointElement,
+	//		LineElement,
+	//		Title,
+	//		Tooltip,
+	//		Legend
+	//	);
+	//}, [props.platform])
 	return (
 		<Container
 			style={{ minHeight: props.platform === 'mobile' ? 189 : 502 }}
