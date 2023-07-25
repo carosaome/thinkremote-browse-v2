@@ -1,6 +1,6 @@
 
 import React from 'react';
-import styled,  { keyframes }  from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 import {
@@ -14,42 +14,23 @@ import {
 	Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { blue } from '@mui/material/colors';
 import { Platform } from '../../core/src/utils/platform';
 
-export interface Data{
+export interface Data {
 	key: number,
 	value: number
 }
 
-ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend
-);
-
-const options = {
-	responsive: true,
-	plugins: {
-		legend: {
-			position: 'top' as const,
-		},
-	},
-};
 
 
 const MobileMetric = (props: {
-		receiveFPS: Data[]
-		decodeFPS: Data[]
-		packetLoss: Data[]
-		bandwidth: Data[]
-		buffer: Data[]
-	}) => {
-	const getAvgData = (data: Data[]) => Math.round(data.map(e => e.value).reduce((a,b) => a+b, 0) / data.length) || 0;
+	receiveFPS: Data[]
+	decodeFPS: Data[]
+	packetLoss: Data[]
+	bandwidth: Data[]
+	buffer: Data[]
+}) => {
+	const getAvgData = (data: Data[]) => Math.round(data.map(e => e.value).reduce((a, b) => a + b, 0) / data.length) || 0;
 
 	return (
 		<React.Fragment>
@@ -62,31 +43,31 @@ const MobileMetric = (props: {
 }
 
 
-const DesktopMetric = (props: {
-		receiveFPS: Data[]
-		decodeFPS: Data[]
-		packetLoss: Data[]
-		bandwidth: Data[]
-		buffer: Data[]
-	}) => {
+const DesktopMetric = React.forwardRef((props: {
+	receiveFPS: Data[]
+	decodeFPS: Data[]
+	packetLoss: Data[]
+	bandwidth: Data[]
+	buffer: Data[]
+}, ref) => {
 	const data = [{
 		labels: props.receiveFPS.map(item => item.key),
 		datasets: [{
-				label: 'receive fps',
-				data: props.receiveFPS.map((item)=>item.value),
-				borderColor: 'rgb(255, 99, 132)',
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-			},{
-				label: 'decode fps',
-				data: props.decodeFPS.map((item)=>item.value),
-				borderColor: '#fff',
-				backgroundColor: "#fff",
+			label: 'receive fps',
+			data: props.receiveFPS.map((item) => item.value),
+			borderColor: 'rgb(255, 99, 132)',
+			backgroundColor: 'rgba(255, 99, 132, 0.5)',
+		}, {
+			label: 'decode fps',
+			data: props.decodeFPS.map((item) => item.value),
+			borderColor: '#fff',
+			backgroundColor: "#fff",
 		}],
 	}, {
 		labels: props.packetLoss.map(item => item.key),
 		datasets: [{
 			label: 'packetloss',
-			data: props.packetLoss.map((item)=>item.value),
+			data: props.packetLoss.map((item) => item.value),
 			borderColor: 'rgb(255, 99, 132)',
 			backgroundColor: 'rgba(255, 99, 132, 0.5)',
 		}],
@@ -94,7 +75,7 @@ const DesktopMetric = (props: {
 		labels: props.bandwidth.map(item => item.key),
 		datasets: [{
 			label: 'bandwidth',
-			data: props.bandwidth.map((item)=>item.value),
+			data: props.bandwidth.map((item) => item.value),
 			borderColor: 'rgb(255, 99, 132)',
 			backgroundColor: 'rgba(255, 99, 132, 0.5)',
 		}],
@@ -102,46 +83,67 @@ const DesktopMetric = (props: {
 		labels: props.buffer.map(item => item.key),
 		datasets: [{
 			label: 'buffered frame',
-			data: props.buffer.map((item)=>item.value),
+			data: props.buffer.map((item) => item.value),
 			borderColor: 'rgb(255, 99, 132)',
 			backgroundColor: 'rgba(255, 99, 132, 0.5)',
 		}],
 	}]
 
+	const options = {
+		responsive: true,
+		plugins: {
+			legend: {
+				position: 'top' as const,
+			},
+		},
+	};
+		
+	
 	return (
-		<React.Fragment>
-			{ data.map((val,key) => { return <Line key={key} options={options} data={val} /> }) }
-		</React.Fragment>
+		<div ref={ref}>
+			{data.map((val, key) => { return <Line key={key} options={options} data={val} /> })}
+		</div>
 	);
-}
+})
 
 
 const Metric = (props: {
-		receiveFPS: Data[]
-		decodeFPS: Data[]
-		packetLoss: Data[]
-		bandwidth: Data[]
-		buffer: Data[]
-		videoConnect: 'loading' | 'connect' | 'disconnect' | string
-		audioConnect: 'loading' | 'connect' | 'disconnect' | string
-		platform: Platform
-	}) => {
+	receiveFPS: Data[]
+	decodeFPS: Data[]
+	packetLoss: Data[]
+	bandwidth: Data[]
+	buffer: Data[]
+	videoConnect: 'loading' | 'connect' | 'disconnect' | string
+	audioConnect: 'loading' | 'connect' | 'disconnect' | string
+	platform: Platform
+}) => {
 	const [isOpen, setOpen] = React.useState(false)
 
 	const handleOpen = () => {
 		setOpen(!isOpen)
 	}
-
+	const ref = React.useRef(null);
+	React.useEffect(() => {
+		ChartJS.register(
+			CategoryScale,
+			LinearScale,
+			PointElement,
+			LineElement,
+			Title,
+			Tooltip,
+			Legend
+		);
+	}, [props.platform])
 	return (
-		<Container 
-			style={{minHeight: props.platform === 'mobile' ? 189 : 502}} 
+		<Container
+			style={{ minHeight: props.platform === 'mobile' ? 189 : 502 }}
 			className={isOpen ? 'slide-in' : 'slide-out'}
 		>
 			<Button onClick={handleOpen}>
 				{
-					isOpen 
-					? <IoIosArrowForward style={{fontSize:34}} color="white"/> 
-					: <IoIosArrowBack 	 style={{fontSize:34}} color="white"/>
+					isOpen
+						? <IoIosArrowForward style={{ fontSize: 34 }} color="white" />
+						: <IoIosArrowBack style={{ fontSize: 34 }} color="white" />
 				}
 			</Button>
 			{
@@ -157,6 +159,7 @@ const Metric = (props: {
 								decodeFPS={props.decodeFPS}
 								packetLoss={props.packetLoss}
 								receiveFPS={props.receiveFPS}
+								ref={ref}
 							/> : <MobileMetric
 								bandwidth={props.bandwidth}
 								buffer={props.buffer}
