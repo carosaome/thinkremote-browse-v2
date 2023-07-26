@@ -1,6 +1,5 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import video_desktop from "./assets/videos/video_demo_desktop.mp4";
 import styled from "styled-components";
 import {
     TurnOnConfirm,
@@ -126,6 +125,7 @@ export default function App() {
         }
     }, [])
 
+    console.log('toi dai dot');
 
     useEffect(() => {
         AddNotifier(async (message: ConnectionEvent, text?: string, source?: string) => {
@@ -216,7 +216,7 @@ export default function App() {
         <Body>
             <RemoteVideo
                 ref={remoteVideo}
-                src={platform == 'desktop' ? video_desktop : video_desktop}
+                src={platform == 'desktop' ?? ''}
                 autoPlay
                 muted
                 playsInline
