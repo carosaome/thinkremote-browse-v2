@@ -3,17 +3,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components'
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-//import {
-//	Chart as ChartJS,
-//	CategoryScale,
-//	LinearScale,
-//	PointElement,
-//	LineElement,
-//	Title,
-//	Tooltip,
-//	Legend,
-//} from 'chart.js';
-//import { Line } from 'react-chartjs-2';
+
 import { Platform } from '../../core/src/utils/platform';
 
 export interface Data {
